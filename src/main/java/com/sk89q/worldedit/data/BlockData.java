@@ -73,6 +73,7 @@ public final class BlockData {
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
+        case BlockID.NETHER_BRICK_STAIRS:
             switch (data) {
             case 0: return 2;
             case 1: return 3;
@@ -231,6 +232,7 @@ public final class BlockData {
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
+        case BlockID.NETHER_BRICK_STAIRS:
             switch (data) {
             case 2: return 0;
             case 3: return 1;
@@ -311,6 +313,7 @@ public final class BlockData {
             case 0: return 2 | withoutOrientation;
             case 1: return 3 | withoutOrientation;
             }
+            break;
 
         case BlockID.PISTON_BASE:
         case BlockID.PISTON_STICKY_BASE:
@@ -334,6 +337,7 @@ public final class BlockData {
 
         case BlockID.FENCE_GATE:
             return ((data + 3) & 0x3) | (data & ~0x3);
+
         }
 
         return data;
@@ -367,11 +371,9 @@ public final class BlockData {
         case NORTH_SOUTH:
             flipX = 1;
             break;
-
         case WEST_EAST:
             flipZ = 1;
             break;
-
         case UP_DOWN:
             flipY = 1;
             break;
@@ -422,6 +424,7 @@ public final class BlockData {
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
+        case BlockID.NETHER_BRICK_STAIRS:
             switch (data) {
             case 0:
             case 1:
@@ -606,8 +609,10 @@ public final class BlockData {
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
+        case BlockID.NETHER_BRICK_STAIRS:
         case BlockID.PUMPKIN:
         case BlockID.JACKOLANTERN:
+        case BlockID.NETHER_WART:
             if (data > 3) return -1;
             return mod((data + increment), 4);
 
@@ -713,7 +718,7 @@ public final class BlockData {
             case 2: return 6;
             case 6: return 0;
         }
-    
+
         return 0;
     }
 
@@ -742,7 +747,7 @@ public final class BlockData {
             case 6: return 2;
             case 0: return 6;
         }
-    
+
         return 0;
     }
 }

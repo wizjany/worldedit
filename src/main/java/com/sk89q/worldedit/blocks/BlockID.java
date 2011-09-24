@@ -136,4 +136,10 @@ public final class BlockID {
     public static final int FENCE_GATE = 107;
     public static final int BRICK_STAIRS = 108;
     public static final int STONE_BRICK_STAIRS = 109;
+    public static final int MYCELIUM = 110;
+    public static final int LILY_PAD = 111;
+    public static final int NETHER_BRICK = 112;
+    public static final int NETHER_BRICK_FENCE = 113;
+    public static final int NETHER_BRICK_STAIRS = 114;
+    public static final int NETHER_WART = 115;
 }

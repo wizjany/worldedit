@@ -138,6 +138,10 @@ public final class ItemID {
     public static final int COOKED_CHICKEN = 366;
     public static final int ROTTEN_FLESH = 367;
     public static final int ENDER_PEARL = 368;
+    public static final int BLAZE_ROD = 369;
+    public static final int GHAST_TEAR = 370;
+    public static final int GOLD_NUGGET = 371;
+    public static final int NETHER_WART_SEED = 372;
     public static final int GOLD_RECORD = 2256;
     public static final int GREEN_RECORD = 2257;
 }
