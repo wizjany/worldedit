@@ -26,23 +26,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagByte;
-import net.minecraft.server.NBTTagByteArray;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagDouble;
-import net.minecraft.server.NBTTagEnd;
-import net.minecraft.server.NBTTagFloat;
-import net.minecraft.server.NBTTagInt;
-import net.minecraft.server.NBTTagIntArray;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagLong;
-import net.minecraft.server.NBTTagShort;
-import net.minecraft.server.NBTTagString;
-import net.minecraft.server.TileEntity;
+import net.minecraft.server.v1_4_5.NBTBase;
+import net.minecraft.server.v1_4_5.NBTTagByte;
+import net.minecraft.server.v1_4_5.NBTTagByteArray;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagDouble;
+import net.minecraft.server.v1_4_5.NBTTagEnd;
+import net.minecraft.server.v1_4_5.NBTTagFloat;
+import net.minecraft.server.v1_4_5.NBTTagInt;
+import net.minecraft.server.v1_4_5.NBTTagIntArray;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagLong;
+import net.minecraft.server.v1_4_5.NBTTagShort;
+import net.minecraft.server.v1_4_5.NBTTagString;
+import net.minecraft.server.v1_4_5.TileEntity;
 
 import org.bukkit.World;
-import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
 
 import com.sk89q.jnbt.ByteArrayTag;
 import com.sk89q.jnbt.ByteTag;
@@ -81,7 +81,7 @@ class NmsBlock extends BaseBlock implements TileEntityBlock {
     static {
         Field field;
         try {
-            field = net.minecraft.server.Block.class.getDeclaredField("isTileEntity");
+            field = net.minecraft.server.v1_4_5.Block.class.getDeclaredField("isTileEntity");
             field.setAccessible(true);
         } catch (NoSuchFieldException e) {
             logger.severe("Could not find NMS block tile entity field!");
@@ -266,7 +266,7 @@ class NmsBlock extends BaseBlock implements TileEntityBlock {
     }
 
     public static boolean hasTileEntity(int type) {
-        net.minecraft.server.Block nmsBlock = getNmsBlock(type);
+        net.minecraft.server.v1_4_5.Block nmsBlock = getNmsBlock(type);
         if (nmsBlock == null) {
             return false;
         }
@@ -278,11 +278,11 @@ class NmsBlock extends BaseBlock implements TileEntityBlock {
         }
     }
 
-    public static net.minecraft.server.Block getNmsBlock(int type) {
-        if (type < 0 || type >= net.minecraft.server.Block.byId.length) {
+    public static net.minecraft.server.v1_4_5.Block getNmsBlock(int type) {
+        if (type < 0 || type >= net.minecraft.server.v1_4_5.Block.byId.length) {
             return null;
         }
-        return net.minecraft.server.Block.byId[type];
+        return net.minecraft.server.v1_4_5.Block.byId[type];
     }
 
     /**
