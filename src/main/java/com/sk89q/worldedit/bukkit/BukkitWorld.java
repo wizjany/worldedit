@@ -368,20 +368,23 @@ public class BukkitWorld extends LocalWorld {
             Skull bukkit = (Skull) state;
             SkullBlock we = (SkullBlock) block;
             // this is dumb
-            SkullType skullType;
+            SkullType skullType = SkullType.SKELETON;
             switch (we.getSkullType()) {
             case 0:
                 skullType = SkullType.SKELETON;
+                break;
             case 1:
                 skullType = SkullType.WITHER;
+                break;
             case 2:
                 skullType = SkullType.ZOMBIE;
+                break;
             case 3:
                 skullType = SkullType.PLAYER;
+                break;
             case 4:
                 skullType = SkullType.CREEPER;
-            default:
-                skullType = SkullType.SKELETON;
+                break;
             }
             bukkit.setSkullType(skullType);
             BlockFace rotation;
@@ -389,41 +392,59 @@ public class BukkitWorld extends LocalWorld {
             // soooo dumb
             case 0:
                 rotation = BlockFace.NORTH;
+                break;
             case 1:
                 rotation = BlockFace.NORTH_NORTH_EAST;
+                break;
             case 2:
                 rotation = BlockFace.NORTH_EAST;
+                break;
             case 3:
                 rotation = BlockFace.EAST_NORTH_EAST;
+                break;
             case 4:
                 rotation = BlockFace.EAST;
+                break;
             case 5:
                 rotation = BlockFace.EAST_SOUTH_EAST;
+                break;
             case 6:
                 rotation = BlockFace.SOUTH_EAST;
+                break;
             case 7:
                 rotation = BlockFace.SOUTH_SOUTH_EAST;
+                break;
             case 8:
                 rotation = BlockFace.SOUTH;
+                break;
             case 9:
                 rotation = BlockFace.SOUTH_SOUTH_WEST;
+                break;
             case 10:
                 rotation = BlockFace.SOUTH_WEST;
+                break;
             case 11:
                 rotation = BlockFace.WEST_SOUTH_WEST;
+                break;
             case 12:
                 rotation = BlockFace.WEST;
+                break;
             case 13:
                 rotation = BlockFace.WEST_NORTH_WEST;
+                break;
             case 14:
                 rotation = BlockFace.NORTH_WEST;
+                break;
             case 15:
                 rotation = BlockFace.NORTH_NORTH_WEST;
+                break;
             default:
                 rotation = BlockFace.NORTH;
+                break;
             }
             bukkit.setRotation(rotation);
-            bukkit.setOwner(we.getOwner());
+            if (we.getOwner() != null && !we.getOwner().isEmpty()) bukkit.setOwner(we.getOwner());
+            bukkit.update(true);
             return true;
         }
 
@@ -507,65 +528,80 @@ public class BukkitWorld extends LocalWorld {
             if (!(state instanceof org.bukkit.block.Skull)) return false;
             Skull bukkit = (Skull) state;
             SkullBlock we = (SkullBlock) block;
-            // this part sux
-            byte skullType;
+            byte skullType = 0;
             switch (bukkit.getSkullType()) {
             // this is dumb but whoever wrote the class is stupid
             case SKELETON:
                 skullType = 0;
+                break;
             case WITHER:
                 skullType = 1;
+                break;
             case ZOMBIE:
                 skullType = 2;
+                break;
             case PLAYER:
                 skullType = 3;
+                break;
             case CREEPER:
                 skullType = 4;
-            default:
-                skullType = 0;
+                break;
             }
             we.setSkullType(skullType);
-            byte rot;
+            byte rot = 0;
             switch (bukkit.getRotation()) {
             // this is even more dumb, hurray for copy/paste
             case NORTH:
                 rot = (byte) 0;
+                break;
             case NORTH_NORTH_EAST:
                 rot = (byte) 1;
+                break;
             case NORTH_EAST:
                 rot = (byte) 2;
+                break;
             case EAST_NORTH_EAST:
                 rot = (byte) 3;
+                break;
             case EAST:
                 rot = (byte) 4;
+                break;
             case EAST_SOUTH_EAST:
                 rot = (byte) 5;
+                break;
             case SOUTH_EAST:
                 rot = (byte) 6;
+                break;
             case SOUTH_SOUTH_EAST:
                 rot = (byte) 7;
+                break;
             case SOUTH:
                 rot = (byte) 8;
+                break;
             case SOUTH_SOUTH_WEST:
                 rot = (byte) 9;
+                break;
             case SOUTH_WEST:
                 rot = (byte) 10;
+                break;
             case WEST_SOUTH_WEST:
                 rot = (byte) 11;
+                break;
             case WEST:
                 rot = (byte) 12;
+                break;
             case WEST_NORTH_WEST:
                 rot = (byte) 13;
+                break;
             case NORTH_WEST:
                 rot = (byte) 14;
+                break;
             case NORTH_NORTH_WEST:
                 rot = (byte) 15;
-            default:
-                rot = (byte) 0;
+                break;
             }
             we.setRot(rot);
             we.setOwner(bukkit.hasOwner() ? bukkit.getOwner() : "");
-
             return true;
         }
 

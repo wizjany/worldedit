@@ -33,7 +33,7 @@ import com.sk89q.worldedit.data.DataException;
  */
 public class SkullBlock extends BaseBlock implements TileEntityBlock {
 
-    private String owner;
+    private String owner = ""; // notchian
     private byte skullType; // stored here for block, in damage value for item
     private byte rot; // only matters if block data == 0x1 (on floor)
 
@@ -42,7 +42,7 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
      * @param data data value to set, controls placement
      */
     public SkullBlock(int data) {
-        super(BlockID.HEAD, data);
+        this(data, (byte) 0);
     }
 
     /**
@@ -73,14 +73,12 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
             this.skullType = type;
         }
         this.rot = rot;
-        if (type == (byte) 3) {
-            this.owner = "";
-        }
+        this.owner = "";
     }
 
     /**
      * Construct the skull block with a given rotation and owner.
-     * The type is assumed to be player.
+     * The type is assumed to be player unless owner is null or empty.
      * @param data data value to set, controls placement
      * @param rot rotation of skull
      * @param owner name of player
@@ -88,17 +86,22 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
     public SkullBlock(int data, byte rot, String owner) {
         super(BlockID.HEAD, 1);
         this.rot = rot;
-        this.skullType = (byte) 3;
-        this.owner = owner == null  || owner.length() > 16 ? "" : owner;
+        this.setOwner(owner);
+        if (owner == null || owner.isEmpty()) this.skullType = (byte) 0;
     }
 
     /**
-     * Set the skull's owner. Automatically sets type to player.
+     * Set the skull's owner. Automatically sets type to player if not empty or null.
      * @param owner player name to set the skull to
      */
     public void setOwner(String owner) {
-        this.skullType = (byte) 3;
-        this.owner = owner == null  || owner.length() > 16 ? "" : owner;
+        if (owner == null) {
+            this.owner = "";
+        } else {
+            if (owner.length() > 16 || owner.isEmpty()) this.owner = "";
+            else this.owner = owner;
+        }
+        if (this.owner != null && !this.owner.isEmpty()) this.skullType = (byte) 3;
     }
 
     /**
@@ -106,7 +109,7 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
      * @return player name or null
      */
     public String getOwner() {
-        return owner == "" ? null : owner;
+        return owner;
     }
 
     /**
@@ -123,9 +126,6 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
      */
     public void setSkullType(byte skullType) {
         this.skullType = skullType;
-        if (skullType == (byte) 3) {
-            this.owner = "";
-        }
     }
 
     /**
@@ -158,6 +158,7 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
     public CompoundTag getNbtData() {
         Map<String, Tag> values = new HashMap<String, Tag>();
         values.put("SkullType", new ByteTag("SkullType", skullType));
+        if (owner == null) owner = "";
         values.put("ExtraType", new StringTag("ExtraType", owner));
         values.put("Rot", new ByteTag("Rot", rot));
         return new CompoundTag(getNbtId(), values);
@@ -184,7 +185,7 @@ public class SkullBlock extends BaseBlock implements TileEntityBlock {
             skullType = ((ByteTag) t).getValue();
         }
         t = values.get("ExtraType");
-        if (t instanceof StringTag) {
+        if (t != null && t instanceof StringTag) {
             owner = ((StringTag) t).getValue();
         }
         t = values.get("Rot");

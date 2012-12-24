@@ -528,20 +528,18 @@ public class WorldEdit {
                     case HEAD:
                         // allow setting type/player/rotation
                         if (blockAndExtraData.length > 1) {
-                            String[] skullData = blockAndExtraData[1].split(",");
-                            // and thus, the format shall be "|type,rotation" or "|type" or "|rotation"
-                            // also rot doesn't do anything if data isn't 1
+                            // and thus, the format shall be "|type|rotation" or "|type" or "|rotation"
                             byte rot = 0;
                             String type = "";
                             try {
-                                rot = Byte.parseByte(skullData[0]);
+                                rot = Byte.parseByte(blockAndExtraData[1]);
                             } catch (NumberFormatException e) {
-                                type = skullData[0];
-                                if (skullData.length > 1) {
+                                type = blockAndExtraData[1];
+                                if (blockAndExtraData.length > 2) {
                                     try {
-                                        rot = Byte.parseByte(skullData[1]);
+                                        rot = Byte.parseByte(blockAndExtraData[2]);
                                     } catch (NumberFormatException e2) {
-                                        throw new UnknownItemException(arg); // not entirely accurate, but w/e
+                                        throw new InvalidItemException(arg, "Second part of skull metadata should be a number.");
                                     }
                                 }
                             }
@@ -554,8 +552,6 @@ public class WorldEdit {
                                 else if (type.equalsIgnoreCase("zombie")) skullType = 2;
                                 else if (type.equalsIgnoreCase("creeper")) skullType = 4;
                                 else skullType = 3;
-                            } else {
-                                skullType = 3; // blank player name, is this even allowed? will it just use char.png?
                             }
                             if (skullType == 3) {
                                 return new SkullBlock(data, rot, type);
