@@ -33,15 +33,18 @@ import java.util.logging.Logger;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
@@ -77,6 +80,7 @@ import com.sk89q.worldedit.blocks.FurnaceBlock;
 import com.sk89q.worldedit.blocks.MobSpawnerBlock;
 import com.sk89q.worldedit.blocks.NoteBlock;
 import com.sk89q.worldedit.blocks.SignBlock;
+import com.sk89q.worldedit.blocks.SkullBlock;
 import com.sk89q.worldedit.bukkit.entity.BukkitEntity;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.TreeGenerator;
@@ -355,6 +359,74 @@ public class BukkitWorld extends LocalWorld {
             return true;
         }
 
+        if (block instanceof SkullBlock) {
+            // Skull block
+            Block bukkitBlock = world.getBlockAt(pt.getBlockX(), pt.getBlockY(), pt.getBlockZ());
+            if (bukkitBlock == null) return false;
+            BlockState state = bukkitBlock.getState();
+            if (!(state instanceof org.bukkit.block.Skull)) return false;
+            Skull bukkit = (Skull) state;
+            SkullBlock we = (SkullBlock) block;
+            // this is dumb
+            SkullType skullType;
+            switch (we.getSkullType()) {
+            case 0:
+                skullType = SkullType.SKELETON;
+            case 1:
+                skullType = SkullType.WITHER;
+            case 2:
+                skullType = SkullType.ZOMBIE;
+            case 3:
+                skullType = SkullType.PLAYER;
+            case 4:
+                skullType = SkullType.CREEPER;
+            default:
+                skullType = SkullType.SKELETON;
+            }
+            bukkit.setSkullType(skullType);
+            BlockFace rotation;
+            switch (we.getRot()) {
+            // soooo dumb
+            case 0:
+                rotation = BlockFace.NORTH;
+            case 1:
+                rotation = BlockFace.NORTH_NORTH_EAST;
+            case 2:
+                rotation = BlockFace.NORTH_EAST;
+            case 3:
+                rotation = BlockFace.EAST_NORTH_EAST;
+            case 4:
+                rotation = BlockFace.EAST;
+            case 5:
+                rotation = BlockFace.EAST_SOUTH_EAST;
+            case 6:
+                rotation = BlockFace.SOUTH_EAST;
+            case 7:
+                rotation = BlockFace.SOUTH_SOUTH_EAST;
+            case 8:
+                rotation = BlockFace.SOUTH;
+            case 9:
+                rotation = BlockFace.SOUTH_SOUTH_WEST;
+            case 10:
+                rotation = BlockFace.SOUTH_WEST;
+            case 11:
+                rotation = BlockFace.WEST_SOUTH_WEST;
+            case 12:
+                rotation = BlockFace.WEST;
+            case 13:
+                rotation = BlockFace.WEST_NORTH_WEST;
+            case 14:
+                rotation = BlockFace.NORTH_WEST;
+            case 15:
+                rotation = BlockFace.NORTH_NORTH_WEST;
+            default:
+                rotation = BlockFace.NORTH;
+            }
+            bukkit.setRotation(rotation);
+            bukkit.setOwner(we.getOwner());
+            return true;
+        }
+
         if (!skipNmsAccess) {
             try {
                 return NmsBlock.set(world, pt, block);
@@ -424,6 +496,76 @@ public class BukkitWorld extends LocalWorld {
             org.bukkit.block.NoteBlock bukkit = (org.bukkit.block.NoteBlock) state;
             NoteBlock we = (NoteBlock) block;
             we.setNote(bukkit.getRawNote());
+            return true;
+        }
+
+        if (block instanceof SkullBlock) {
+            // Skull block
+            Block bukkitBlock = world.getBlockAt(pt.getBlockX(), pt.getBlockY(), pt.getBlockZ());
+            if (bukkitBlock == null) return false;
+            BlockState state = bukkitBlock.getState();
+            if (!(state instanceof org.bukkit.block.Skull)) return false;
+            Skull bukkit = (Skull) state;
+            SkullBlock we = (SkullBlock) block;
+            // this part sux
+            byte skullType;
+            switch (bukkit.getSkullType()) {
+            // this is dumb but whoever wrote the class is stupid
+            case SKELETON:
+                skullType = 0;
+            case WITHER:
+                skullType = 1;
+            case ZOMBIE:
+                skullType = 2;
+            case PLAYER:
+                skullType = 3;
+            case CREEPER:
+                skullType = 4;
+            default:
+                skullType = 0;
+            }
+            we.setSkullType(skullType);
+            byte rot;
+            switch (bukkit.getRotation()) {
+            // this is even more dumb, hurray for copy/paste
+            case NORTH:
+                rot = (byte) 0;
+            case NORTH_NORTH_EAST:
+                rot = (byte) 1;
+            case NORTH_EAST:
+                rot = (byte) 2;
+            case EAST_NORTH_EAST:
+                rot = (byte) 3;
+            case EAST:
+                rot = (byte) 4;
+            case EAST_SOUTH_EAST:
+                rot = (byte) 5;
+            case SOUTH_EAST:
+                rot = (byte) 6;
+            case SOUTH_SOUTH_EAST:
+                rot = (byte) 7;
+            case SOUTH:
+                rot = (byte) 8;
+            case SOUTH_SOUTH_WEST:
+                rot = (byte) 9;
+            case SOUTH_WEST:
+                rot = (byte) 10;
+            case WEST_SOUTH_WEST:
+                rot = (byte) 11;
+            case WEST:
+                rot = (byte) 12;
+            case WEST_NORTH_WEST:
+                rot = (byte) 13;
+            case NORTH_WEST:
+                rot = (byte) 14;
+            case NORTH_NORTH_WEST:
+                rot = (byte) 15;
+            default:
+                rot = (byte) 0;
+            }
+            we.setRot(rot);
+            we.setOwner(bukkit.hasOwner() ? bukkit.getOwner() : "");
+
             return true;
         }
 
@@ -982,6 +1124,7 @@ public class BukkitWorld extends LocalWorld {
         //case BlockID.DISPENSER:
         //case BlockID.MOB_SPAWNER:
         case BlockID.NOTE_BLOCK:
+        case BlockID.HEAD:
             return super.getBlock(pt);
         default:
             if (!skipNmsAccess) {
