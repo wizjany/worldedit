@@ -1162,8 +1162,7 @@ public class WorldEdit {
                 return false;
             }
 
-            if (!player.hasPermission("worldedit.navigation.jumpto.tool")
-                    && !player.hasPermission("worldedit.navigation.jumpto")) { // TODO: Remove old permission
+            if (!player.hasPermission("worldedit.navigation.jumpto.tool") ){
                 return false;
             }
 
@@ -1201,8 +1200,7 @@ public class WorldEdit {
                 return false;
             }
 
-            if (!player.hasPermission("worldedit.navigation.thru.tool")
-                    && !player.hasPermission("worldedit.navigation.thru")) { // TODO: Remove old permission
+            if (!player.hasPermission("worldedit.navigation.thru.tool")) {
                 return false;
             }
 
